@@ -1,21 +1,14 @@
 package com.bkk.android.android_project4.RetrofitUtil;
 
 
-import android.util.Log;
-
-import com.bkk.android.android_project4.Model.GitHubRepo;
 import com.bkk.android.android_project4.Model.Recipe;
 
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 
 
 public class RetrofitUtil {
