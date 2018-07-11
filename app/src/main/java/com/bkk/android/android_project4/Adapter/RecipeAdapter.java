@@ -73,10 +73,14 @@ public class RecipeAdapter extends RecyclerView.Adapter< RecipeAdapter.RecyclerV
     public void onBindViewHolder(@NonNull RecipeAdapter.RecyclerViewHolder holder, int position) {
 
         Recipe recipe_object = mRecipelist.get( position );
+
         String recipe_name = recipe_object.getName();
+        String ingredient_counts =  String.valueOf( recipe_object.getIngredients().size() );
+        String steps_counts = String.valueOf( recipe_object.getSteps().size() );
 
         holder.tv_recipe_name.setText(recipe_name);
-        holder.tv_recipe_name_label.setText( R.string.recipe_name_label );
+        holder.tv_main_ingredients_count.setText(ingredient_counts);
+        holder.tv_main_steps_count.setText(steps_counts);
 
     }
 
@@ -91,13 +95,17 @@ public class RecipeAdapter extends RecyclerView.Adapter< RecipeAdapter.RecyclerV
 
         TextView tv_recipe_name;
         TextView tv_recipe_name_label;
+        TextView tv_main_ingredients_count;
+        TextView tv_main_steps_count;
 
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
 
             tv_recipe_name = itemView.findViewById(R.id.tv_recipe_name);
-            tv_recipe_name_label = itemView.findViewById(R.id.tv_recipe_name_label);
+            tv_main_ingredients_count = itemView.findViewById(R.id.tv_main_ingredients_count);
+            tv_main_steps_count = itemView.findViewById(R.id.tv_main_steps_count);
+
 
             // implements View.OnClickListener
             itemView.setOnClickListener(this);

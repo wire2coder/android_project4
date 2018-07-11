@@ -1,5 +1,7 @@
 package com.bkk.android.android_project4;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.IRe
     private ArrayList<Recipe> mRecipe_list;
     private RecyclerView rv_recipes;
     private RecipeAdapter recipeAdapter;
+
+    public static String RECIPE_KEY = "recipe_key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +91,19 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.IRe
 
     @Override
     public void onRecipeClick(int position) {
-//        Toast.makeText(this, String.valueOf(i), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, String.valueOf(position), Toast.LENGTH_SHORT).show();
 
-        mRecipe_list.get( position );
+//        id	2
+//        name	"Brownies"
+//        ingredients	[…]
+//        steps	[…]
+//        servings	8
+//        image	""
+        Recipe recipe_object = mRecipe_list.get( position );
 
-        // TODO: use Serializable to store 'ingredients' and 'steps'
-        // TODO: make a intent to start an Activity that shows 'ingredients' and 'steps'
+        Intent intentThatStartDetailActivity = new Intent(MainActivity.this, DetailActivity.class);
+        intentThatStartDetailActivity.putExtra(RECIPE_KEY, recipe_object);
+        startActivity(intentThatStartDetailActivity);
 
     }
 
