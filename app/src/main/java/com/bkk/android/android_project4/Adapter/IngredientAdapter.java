@@ -27,13 +27,14 @@ public class IngredientAdapter extends RecyclerView.Adapter< IngredientAdapter.R
     private List<Ingredient> mIngredientList;
 
 
-    public IngredientAdapter(Context mContext) {
-        this.mContext = mContext;
-//        , List<Ingredient> list_in
-//        this.mIngredientList = list_in;
+//    public IngredientAdapter( List<Ingredient> list_in ) {
+//    this.mIngredientList = list_in;
+
+    public IngredientAdapter( Context context ) {
+        this.mContext = context;
     }
 
-    public void swapData(List<Ingredient> list_in ) {
+    public void swapData( List<Ingredient> list_in ) {
 
         if (list_in.size() != 0) {
             this.mIngredientList = list_in;
@@ -78,6 +79,9 @@ public class IngredientAdapter extends RecyclerView.Adapter< IngredientAdapter.R
 
         holder.tv_ingredient_name.setText( ingredient_object.getIngredient() );
 
+        holder.tv_ingredient_measurement.setText( ingredient_object.getMeasure() );
+
+        holder.tv_ingredient_quantity.setText(  String.valueOf( ingredient_object.getQuantity() ) );
 
     }
 

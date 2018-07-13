@@ -1,27 +1,20 @@
 package com.bkk.android.android_project4;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
-
 import com.bkk.android.android_project4.Adapter.IngredientAdapter;
+import com.bkk.android.android_project4.Fragment.IngredientFragment;
+import com.bkk.android.android_project4.KeyUtil.KeyFile;
 import com.bkk.android.android_project4.Model.Ingredient;
 import com.bkk.android.android_project4.Model.Recipe;
 
-import org.w3c.dom.Text;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.widget.TextView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
-
-
-    private RecyclerView rv_ingredient;
-    private IngredientAdapter ingredientAdapter;
-    private List<Ingredient> mIngredientList;
 
 
     @Override
@@ -29,39 +22,40 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+        // get references to 'views' in activity_detail.xml
+        TextView tv_recipe_name2 = findViewById(R.id.tv_recipe_name2);
+
 
         // get data out of the 'Intent' object
         Recipe recipe_object = getIntent().getExtras().getParcelable(MainActivity.RECIPE_KEY);
-        //        String recipe_name = recipe_object.getName();
-
-        mIngredientList = recipe_object.getIngredients();
-        ArrayList<Ingredient> arrayList1 = new ArrayList<>(mIngredientList);
 
 
-        rv_ingredient = findViewById(R.id.rv_ingredient);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DetailActivity.this);
-
-//        ingredientAdapter = new IngredientAdapter(DetailActivity.this, arrayList1);
-        ingredientAdapter = new IngredientAdapter(DetailActivity.this);
-
-        rv_ingredient.setLayoutManager(linearLayoutManager);
-        rv_ingredient.setAdapter(ingredientAdapter);
-
-        ingredientAdapter.swapData(arrayList1);
-
-        // TODO: finish filling IngredientAdapter.java with data
+        // make a new 'Bundle' and put the 'INGREDIENTS' in it
+        Bundle bundleForRecipe = new Bundle();
+        bundleForRecipe.putParcelable(KeyFile.INGREDIENT_KEY, recipe_object);
 
 
+        // COMPLETED: make a new fragment, IngredientFragment.java
+        IngredientFragment ingredientFragment = new IngredientFragment();
+        ingredientFragment.setArguments( bundleForRecipe );
+
+        // use import android.support.v4.app.FragmentManager;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction()
+               .add(R.id.fragment_ingredient, ingredientFragment)
+                .commit();
 
 
-//        TextView tv_recipe_name2 = findViewById(R.id.tv_recipe_name2);
-//        TextView tv_ingredient_count = findViewById(R.id.tv_ingredient_count);
-//        TextView tv_step_count = findViewById(R.id.tv_step_count);
+        // TODO: make a new fragment, StepsFragment.java
 
-//        tv_recipe_name2.setText(recipe_name);
 
-//        tv_ingredient_count.setText( String.valueOf( recipe_object.getIngredients().size() ) );
-//        tv_step_count.setText( String.valueOf( recipe_object.getSteps().size() ) );
+
+        // Setting Recipe name
+        tv_recipe_name2.setText( recipe_object.getName() );
+
+
+
 
 
 
