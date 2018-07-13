@@ -52,6 +52,7 @@ public class IngredientFragment extends Fragment {
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager( getActivity() );
         ingredientRecyclerView.setLayoutManager( linearLayoutManager );
+        ingredientRecyclerView.setHasFixedSize(false);
 
         IngredientAdapter ingredientAdapter = new IngredientAdapter( getContext() );
         ingredientRecyclerView.setAdapter( ingredientAdapter );

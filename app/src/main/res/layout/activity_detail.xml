@@ -7,11 +7,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:context=".DetailActivity">
 
@@ -41,12 +40,11 @@
 
 
         <!--fragment uses FRAME LAYOUT-->
-        <!--RecyclerView for ingredients is inside here-->
+        <!--RecyclerView for 'ingredients' is inside here-->
         <FrameLayout
             android:id="@+id/fragment_ingredient"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tv_step_count"
@@ -58,7 +56,12 @@
             tools:layout_editor_absoluteY="128dp" />
 
 
-
+        <!--fragment uses FRAME LAYOUT-->
+        <!--RecyclerView for 'steps' is inside here-->
+        <FrameLayout
+            android:id="@+id/fragment_steps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
 
     </LinearLayout>

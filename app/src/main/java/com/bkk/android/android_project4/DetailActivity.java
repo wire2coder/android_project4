@@ -2,6 +2,7 @@ package com.bkk.android.android_project4;
 
 import com.bkk.android.android_project4.Adapter.IngredientAdapter;
 import com.bkk.android.android_project4.Fragment.IngredientFragment;
+import com.bkk.android.android_project4.Fragment.StepsFragment;
 import com.bkk.android.android_project4.KeyUtil.KeyFile;
 import com.bkk.android.android_project4.Model.Ingredient;
 import com.bkk.android.android_project4.Model.Recipe;
@@ -31,33 +32,37 @@ public class DetailActivity extends AppCompatActivity {
 
 
         // make a new 'Bundle' and put the 'INGREDIENTS' in it
-        Bundle bundleForRecipe = new Bundle();
-        bundleForRecipe.putParcelable(KeyFile.INGREDIENT_KEY, recipe_object);
+        Bundle bundleForFragments = new Bundle();
+        bundleForFragments.putParcelable(KeyFile.INGREDIENT_KEY, recipe_object);
 
-
-        // COMPLETED: make a new fragment, IngredientFragment.java
-        IngredientFragment ingredientFragment = new IngredientFragment();
-        ingredientFragment.setArguments( bundleForRecipe );
 
         // use import android.support.v4.app.FragmentManager;
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        fragmentManager.beginTransaction()
+
+        // COMPLETED: make a new fragment, IngredientFragment.java
+        IngredientFragment ingredientFragment = new IngredientFragment();
+        ingredientFragment.setArguments( bundleForFragments );
+
+
+        fragmentManager
+                .beginTransaction()
                .add(R.id.fragment_ingredient, ingredientFragment)
                 .commit();
 
 
-        // TODO: make a new fragment, StepsFragment.java
+        // COMPLETED: make a new fragment, StepsFragment.java
+        StepsFragment stepsFragment = new StepsFragment();
+        stepsFragment.setArguments( bundleForFragments );
 
+        fragmentManager
+                .beginTransaction()
+                .add(R.id.fragment_steps, stepsFragment)
+                .commit();
 
 
         // Setting Recipe name
         tv_recipe_name2.setText( recipe_object.getName() );
-
-
-
-
-
 
 
     } // onCreate
