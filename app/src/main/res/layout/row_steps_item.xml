@@ -6,13 +6,13 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tv_step_number"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Step ID"
-        android:textAppearance="@style/TextAppearance.AppCompat" />
+    <!--<TextView-->
+        <!--android:id="@+id/tv_step_number"-->
+        <!--android:layout_width="50dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:text="Step ID"-->
+        <!--android:textAppearance="@style/TextAppearance.AppCompat" />-->
 
     <TextView
         android:id="@+id/tv_step_short_description"
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Short Description"
-        android:textAppearance="@style/TextAppearance.AppCompat" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <!--<TextView-->
     <!--android:id="@+id/tv_long_description"-->
