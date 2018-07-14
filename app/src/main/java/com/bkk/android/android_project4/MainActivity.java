@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.IRe
             public void onResponse(Call<ArrayList<Recipe>> call, Response<ArrayList<Recipe>> response) {
 
                 mRecipe_list = response.body();
-                 Log.v("tag", String.valueOf(mRecipe_list.size() ) );
+//                 Log.v("tag", String.valueOf(mRecipe_list.size() ) );
 
                 recipeAdapter.swapData(MainActivity.this, mRecipe_list);
 

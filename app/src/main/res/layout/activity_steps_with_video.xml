@@ -5,12 +5,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".StepsWithVideo">
+    android:orientation="vertical"
+    tools:context=".StepsWithVideoActivity">
 
-    <TextView
-        android:id="@+id/tv_test1"
-        android:layout_width="wrap_content"
+    <!--this fram layout is for fragment with VideoPlayer -->
+    <!--and long description-->
+
+
+    <FrameLayout
+        android:id="@+id/fragment_video_and_desc"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView" />
+        android:visibility="visible" />
+
+    <Button
+        android:id="@+id/but_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next" />
+
+    <Button
+        android:id="@+id/but_previous"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Previous" />
+
+
 </LinearLayout>
