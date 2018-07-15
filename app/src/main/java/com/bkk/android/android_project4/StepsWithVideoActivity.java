@@ -39,36 +39,6 @@ public class StepsWithVideoActivity extends AppCompatActivity implements VideoAn
                     .commit();
 
 
-
-
-        // just one step object
-//        Step step_object = intentThatStartedThisActivity.getExtras().getParcelable("step_object");
-//        ArrayList<Step> step_arraylist = intentThatStartedThisActivity.getExtras().getParcelableArrayList("step_arraylist");
-//        int step_arraylist_position = intentThatStartedThisActivity.getExtras().getInt("step_arraylist_position");
-//        Log.v("tag", String.valueOf( step_arraylist_position )  );
-
-
-
-        // Data insertion logic
-//        Bundle bundle1 = new Bundle();
-//        bundle1.putParcelable("step_object", step_object);
-//        bundle1.putParcelableArrayList("step_arraylist", step_arraylist );
-//        bundle1.putInt("step_arraylist_position", step_arraylist_position);
-
-        // make a new fragment
-//        VideoAndLongDesFragment vald_fragment = new VideoAndLongDesFragment();
-        // data going into the 'Fragment'
-//        vald_fragment.setArguments(bundle1);
-
-        // use import android.support.v4.app.FragmentManager;
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-
-//        fragmentManager.beginTransaction()
-//                .add(R.id.fragment_video_and_desc, vald_fragment)
-//                .commit(); // run the Fragment
-
-
-
     } // onCreate
 
 
@@ -76,10 +46,8 @@ public class StepsWithVideoActivity extends AppCompatActivity implements VideoAn
     // for implements VideoAndLongDesFragment.ClickInterface
     @Override
     public void clickInterfaceMethod1(ArrayList<Step> step_arraylist, int step_arraylist_position2) {
-//        Log.v("tag >>>", String.valueOf( step_arraylist_position2 )  );
+        Log.v("tag clickMethod1", String.valueOf( step_arraylist_position2 )  );
 
-        int next_step = step_arraylist_position2 + 1;
-//        Log.v("tag clickMethod1 ", String.valueOf( next_step )  );
 
         /*
         * Logic for making new starting new Fragment
@@ -87,24 +55,21 @@ public class StepsWithVideoActivity extends AppCompatActivity implements VideoAn
         FragmentManager fragmentManager = getSupportFragmentManager(); // use import android.support.v4.app.FragmentManager;
         VideoAndLongDesFragment vald_fragment2 = new VideoAndLongDesFragment();
 
-        Step nextStep = step_arraylist.get(next_step);
 
         Bundle onClickBundleObject = new Bundle();
         onClickBundleObject.putParcelableArrayList("step_arraylist", step_arraylist);
-        onClickBundleObject.putInt("step_arraylist_position2", next_step);
-        onClickBundleObject.putParcelable("next_step", nextStep);
+        onClickBundleObject.putInt("step_arraylist_position2", step_arraylist_position2);
 
 
         vald_fragment2.setArguments(onClickBundleObject);
 
+
         fragmentManager.beginTransaction()
-                .add(R.id.fragment_video_and_desc, vald_fragment2)
+                // .replace() instad of .add() so you make a new VideoPlayer
+                .replace(R.id.fragment_video_and_desc, vald_fragment2)
                 .commit();
 
-
-
-
-    }
+    } // clickInterfaceMethod1()
 
 
 } // class StepsWithVideoActivity
