@@ -7,14 +7,17 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.bkk.android.android_project4.Model.Step;
 import com.bkk.android.android_project4.R;
+import com.bkk.android.android_project4.StepsWithVideoActivity;
 import com.google.android.exoplayer2.DefaultLoadControl;
 
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -35,6 +38,8 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
+
 
 public class VideoAndLongDesFragment extends Fragment {
 
@@ -44,9 +49,35 @@ public class VideoAndLongDesFragment extends Fragment {
     private Handler mainHandler;
 
 
+    private int step_arraylist_position;
+    private int step_arraylist_position2;
+    private ArrayList<Step> mStepArrayList;
+    private Step mStepObject;
+    private Step mNextStepObject;
+
+
+
     // empty constructor for Fragment
     public VideoAndLongDesFragment() {
     }
+
+
+
+    /*
+    * Interface Logic
+    * */
+
+    private ClickInterface m_click_interface;
+
+    // make a 'click listener interface' for those buttons.
+    public interface ClickInterface {
+
+        // methods
+        void clickInterfaceMethod1( ArrayList<Step> steps_arrayList, int step_arraylist_position );
+
+
+    } // interface
+
 
 
 
@@ -55,30 +86,127 @@ public class VideoAndLongDesFragment extends Fragment {
                               Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_video_and_desc, container, false);
-
-        // TODO: 7/14, add 'click listener' to these buttons
         Button but_next = rootView.findViewById(R.id.but_next);
         Button but_previous = rootView.findViewById(R.id.but_previous);
-
-
-        Step step_object = getArguments().getParcelable("step_object");
-
 
         mainHandler = new Handler();
         bandwidthMeter = new DefaultBandwidthMeter();
         simpleExoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.video_player1);
         simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
-        String link_to_video = step_object.getVideoURL();
-        Uri uri1 = Uri.parse( link_to_video );
+        // initializing click_listener, make sure do 'IMPLEMENT' the VideoAndLongDesFragment.ClickInterface
+        m_click_interface = (StepsWithVideoActivity) getActivity();
 
-//        Log.v("tag", uri1.toString() );
 
-        makeNewPlayer( uri1 );
+        /* Logic for extracting data from the 'THIS Activity Bundle'
+        * */
+        if ( savedInstanceState == null ) {
+//            Toast.makeText( getActivity() ,"savedInstanceState null", Toast.LENGTH_SHORT).show();
+        } else {
+//            Toast.makeText( getActivity() ,"savedInstanceState NotNull", Toast.LENGTH_SHORT).show();
+        }
+
+
+        /* Logic for extracting data coming from
+        * public void step_on_click(List<Step> list_in, int step_arraylist_position) {
+        * */
+        mStepArrayList = getArguments().getParcelableArrayList("step_arraylist");
+//            Log.v("tag mStepArrayList ", mStepArrayList.toString()  );
+
+
+        step_arraylist_position2 = getArguments().getInt("step_arraylist_position2");
+//            Log.v("tag position2 ", String.valueOf( step_arraylist_position2 )  );
+
+        step_arraylist_position = getArguments().getInt("step_arraylist_position");
+//            Log.v("tag position ", String.valueOf( step_arraylist_position )  );
+
+
+        mStepObject = mStepArrayList.get(step_arraylist_position)  ;
+        String link_to_video = mStepObject.getVideoURL();
+            Log.v("tag link_to_video ", link_to_video  );
+
+
+            if ( mNextStepObject != null) {
+
+                mNextStepObject = getArguments().getParcelable("next_step");
+                String next_step_link_to_video = mNextStepObject.getVideoURL();
+                    Log.v("tag next_step_link ", next_step_link_to_video  );
+
+            }
+
+        // TODO: 7/15, make the 'NEXT' button play the next video
+
+        /*
+        * LOGIC for how Video Player should behavior
+        * when this 'Fragment' is created.
+        * */
+
+        if( !link_to_video.isEmpty() ) {
+
+            Uri uri1 = Uri.parse( link_to_video );
+            makeNewPlayer( uri1 );
+
+        } else {
+            player = null;
+            simpleExoPlayerView.setForeground(
+                    ContextCompat.getDrawable(
+                            getContext(), R.drawable.ic_visibility_off_white_36dp)
+            );
+
+//        simpleExoPlayerView.setResizeMode( AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH );
+        }
+
+
+
+
+
+
+
+        // BUTTON CLICK HANDLER
+        but_next.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+//                if ( step_object.getId() > 0 ) {
+//
+//                    if ( player != null ) {
+//                        player.stop(); // stop the Player from playing
+//                    }
+//
+//                }
+
+
+                m_click_interface.clickInterfaceMethod1( mStepArrayList, step_arraylist_position );
+
+
+            } // onClick
+
+        });
+
+
+
+        // BUTTON CLICK HANDLER
+        but_previous.setOnClickListener( new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+
+                // void clickInterfaceMethod1( ArrayList<Step> steps_arrayList, int i, String recipeName );
+//                m_click_interface.clickInterfaceMethod1( step_arraylist,  step_object.getId()-1, );
+
+                Toast.makeText(getContext(),"Previous", Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
+
 
 
         return rootView;
     } // onCreateView
+
+
 
 
     // create a new VideoPlayer
@@ -158,6 +286,16 @@ public class VideoAndLongDesFragment extends Fragment {
             player.release();
         }
     }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle currentDataBundle) {
+        super.onSaveInstanceState(currentDataBundle);
+
+//        currentDataBundle.putInt("step_arraylist_position", step_arraylist_position);
+
+
+    } // onSaveInstanceState
 
 
 } // class VideoAndLongDesFragment

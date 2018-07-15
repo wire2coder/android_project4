@@ -26,5 +26,17 @@
         android:text="Long Descriptoin" />
 
 
+    <Button
+        android:id="@+id/but_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Next" />
+
+    <Button
+        android:id="@+id/but_previous"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Previous" />
+
 
 </LinearLayout>

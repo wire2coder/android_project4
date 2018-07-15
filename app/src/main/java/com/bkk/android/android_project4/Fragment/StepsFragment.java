@@ -70,19 +70,22 @@ public class StepsFragment extends Fragment
     @Override
     // the method inside the 'Adapter' is what is running
     // data is COMING OUT OF the 'Adapter' INTO this method
-    public void step_on_click(List<Step> list_in, int position) {
-
+    public void step_on_click(List<Step> list_in, int step_arraylist_position) {
+//        Log.v("StepsFragment.java: ", String.valueOf( step_arraylist_position )  );
 
         Intent intent1 = new Intent( getContext(), StepsWithVideoActivity.class);
 
-        // TODO: maybe just pass in the 'position' instead
-        Step step_object = list_in.get( position);
+
+        Step step_object = list_in.get( step_arraylist_position);
         intent1.putExtra("step_object", step_object);
+        intent1.putExtra("step_arraylist_position", step_arraylist_position);
 
 
         // Get an ArrayList from List
         ArrayList<Step> asdf_step = new ArrayList<>(step_list);
         intent1.putParcelableArrayListExtra("step_arraylist", asdf_step);
+
+        // start the Activity
         startActivity(intent1);
 
     }
