@@ -67,18 +67,30 @@ public class StepsFragment extends Fragment
     }
 
 
+
+
+
+
+
     @Override
     // the method inside the 'Adapter' is what is running
     // data is COMING OUT OF the 'Adapter' INTO this method
-    public void step_on_click( List<Step> list_in, int step_arraylist_position ) {
-//        Log.v("StepsFragment.java: ", String.valueOf( step_arraylist_position )  );
+    public void step_on_click( List<Step> list_in, int adapterPosition ) {
+//        Log.v("StepsFragment.java: ", String.valueOf( adapterPosition )  );
 
+        /*
+        * Logic for data extraction
+        * */
         Intent intent1 = new Intent( getContext(), StepsWithVideoActivity.class);
 
+        // 'position' is coming out of the getAdapterPosition() from inside StepsAdapter.java
+//        Step step_object = list_in.get( position);
+//        intent1.putExtra("step_object", step_object);
 
         // Get an ArrayList from List
         ArrayList<Step> asdf_step = new ArrayList<>(step_list);
         intent1.putParcelableArrayListExtra("step_arraylist", asdf_step);
+        intent1.putExtra("step_arraylist_position2", adapterPosition);
 
         // start the Activity
         startActivity(intent1);
