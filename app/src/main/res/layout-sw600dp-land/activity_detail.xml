@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_detailactivity_land"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetailActivity">
+
+
+    <!--fragment uses FRAME LAYOUT-->
+    <!--RecyclerView for 'ingredients' is inside here-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/land_tv_ingre_title"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="ingredient title" />-->
+
+    <!--<TextView-->
+    <!--android:id="@+id/land_tv_step_title"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="steps title" />-->
+
+    <!--fragment uses FRAME LAYOUT-->
+    <!--RecyclerView for 'steps' is inside here-->
+
+
+    <FrameLayout
+        android:id="@+id/fragment_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintStart_toStartOf="@+id/fragment_ingredient"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_ingredient">
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_ingredient"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/fragment_steps"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
+
+    <!--this FrameLayout layout is for fragment with VideoPlayer -->
+    <!--and long description-->
+    <FrameLayout
+        android:id="@+id/fragment_video_and_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible" />
+
+</android.support.constraint.ConstraintLayout>
+
+
+

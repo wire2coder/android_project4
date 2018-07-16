@@ -12,6 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bkk.android.android_project4.Fragment.VideoAndLongDesFragment;
+import com.bkk.android.android_project4.KeyUtil.KeyFile;
+import com.bkk.android.android_project4.Model.Recipe;
 import com.bkk.android.android_project4.Model.Step;
 
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ public class StepsWithVideoActivity extends AppCompatActivity implements VideoAn
             Intent intentThatStartedThisActivity = getIntent();
 
             Bundle selectedRecipeBundle = intentThatStartedThisActivity.getExtras();
+            Recipe recipe_object = selectedRecipeBundle.getParcelable(KeyFile.INGREDIENT_KEY);
+//                Log.v("tag", recipe_object.getName() );
 
             FragmentManager fragmentManager = getSupportFragmentManager(); // use import android.support.v4.app.FragmentManager;
 
