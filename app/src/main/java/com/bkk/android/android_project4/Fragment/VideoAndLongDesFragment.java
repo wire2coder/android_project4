@@ -87,8 +87,8 @@ public class VideoAndLongDesFragment extends Fragment {
                               Bundle savedInstanceState) {
 
         /*
-        * Logic for 'initializing data when the view is created
-        * */
+         * Logic for 'initializing data when the view is created
+         * */
 
         View rootView = inflater.inflate(R.layout.fragment_video_and_desc, container, false);
         final Button but_next = rootView.findViewById(R.id.but_next);
@@ -100,24 +100,21 @@ public class VideoAndLongDesFragment extends Fragment {
         simpleExoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.video_player1);
         simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
 
-        // initializing click_listener, make sure do 'IMPLEMENT' the VideoAndLongDesFragment.ClickInterface
-        m_click_interface = (StepsWithVideoActivity) getActivity();
+            /*
+             * Logic for extracting data from the 'THIS Activity Bundle'
+             * */
+            if (savedInstanceState == null) {
+    //            Toast.makeText( getActivity() ,"savedInstanceState null", Toast.LENGTH_SHORT).show();
+            } else {
+    //            Toast.makeText( getActivity() ,"savedInstanceState NotNull", Toast.LENGTH_SHORT).show();
+            }
 
-
-        /*
-        * Logic for extracting data from the 'THIS Activity Bundle'
-        * */
-        if ( savedInstanceState == null ) {
-//            Toast.makeText( getActivity() ,"savedInstanceState null", Toast.LENGTH_SHORT).show();
-        } else {
-//            Toast.makeText( getActivity() ,"savedInstanceState NotNull", Toast.LENGTH_SHORT).show();
-        }
 
 
         /*
-        * Logic for extracting data coming from
-        * public void step_on_click(List<Step> list_in, int step_arraylist_position) {
-        * */
+         * Logic for extracting data coming from
+         * public void step_on_click(List<Step> list_in, int step_arraylist_position) {
+         * */
         mStepArrayList = getArguments().getParcelableArrayList("step_arraylist");
 //            Log.v("tag mStepArrayList ", mStepArrayList.toString()  );
 
@@ -126,111 +123,135 @@ public class VideoAndLongDesFragment extends Fragment {
 //            Log.v("tag position2 ", String.valueOf( step_arraylist_position2 )  );
 
 
-        mStepObject = mStepArrayList.get(step_arraylist_position2)  ;
-        String link_to_video = mStepObject.getVideoURL();
+        mStepObject = mStepArrayList.get(step_arraylist_position2);
+
+
+
+        // check for Landscape vs Portrait
+        // Landscape mode, don't make new activity when buttons are click
+        // TODO: default value is false
+        if ( false ) {
+
+            String link_to_video = mStepObject.getVideoURL();
+            tv_long_description.setText(mStepObject.getDescription());
+
+            if (!link_to_video.isEmpty()) {
+                Uri uri1 = Uri.parse(link_to_video);
+                makeNewPlayer(uri1);
+            } else {
+                player = null;
+                simpleExoPlayerView.setForeground( ContextCompat.getDrawable( getContext(), R.drawable.ic_visibility_off_white_36dp ) );
+            }
+
+            // Portrait mode, make new activity when click on button
+        } else {
+
+            // initializing click_listener, make sure do 'IMPLEMENT' the VideoAndLongDesFragment.ClickInterface
+            // TODO: casting error, HERE 7/18
+            m_click_interface = (StepsWithVideoActivity) getActivity();
+
+            String link_to_video = mStepObject.getVideoURL();
 //            Log.v("tag link_to_video ", link_to_video  );
 
 
-        /*
-        * Logic for fill data into the XML file
-        * */
-
-        tv_long_description.setText( mStepObject.getDescription() );
-
-
-
-        /*
-        * Logic for how Video Player should behavior
-        * when this 'Fragment' is created.
-        * */
-
-        if( !link_to_video.isEmpty() ) {
-            Uri uri1 = Uri.parse( link_to_video );
-            makeNewPlayer( uri1 );
-        } else {
-            player = null;
-            simpleExoPlayerView.setForeground(
-                    ContextCompat.getDrawable(
-                            getContext(), R.drawable.ic_visibility_off_white_36dp)
-            );
-
-//        simpleExoPlayerView.setResizeMode( AspectRatioFrameLayout.RESIZE_MODE_FIXED_WIDTH );
-        }
+            /*
+             * Logic for fill data into the XML file
+             * */
+            tv_long_description.setText(mStepObject.getDescription());
 
 
 
-        // BUTTON CLICK HANDLER
-        but_next.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            /*
+             * Logic for how Video Player should behavior
+             * when this 'Fragment' is created.
+             * */
 
-                lastIndexOfTheArrayList = mStepArrayList.size() - 1; // size >> 7, size - 1 >> 6
+            if (!link_to_video.isEmpty()) {
+                Uri uri1 = Uri.parse(link_to_video);
+                makeNewPlayer(uri1);
+            } else {
+                player = null;
+                simpleExoPlayerView.setForeground(
+                        ContextCompat.getDrawable(
+                                getContext(), R.drawable.ic_visibility_off_white_36dp)
+                );
+            }
+
+
+            // BUTTON CLICK HANDLER
+            but_next.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    lastIndexOfTheArrayList = mStepArrayList.size() - 1; // size >> 7, size - 1 >> 6
 //                    Log.v("tag currentIndex ", String.valueOf( step_arraylist_position2 )  );
 //                    Log.v("tag lastIndex ", String.valueOf( lastIndexOfTheArrayList )  );
 
-                if ( mStepArrayList.get(step_arraylist_position2).getId() < lastIndexOfTheArrayList )  {
+                    if (mStepArrayList.get(step_arraylist_position2).getId() < lastIndexOfTheArrayList) {
 
-                    if (player!=null){
-                        player.stop();
+                        if (player != null) {
+                            player.stop();
+                        }
+
+                        m_click_interface.clickInterfaceMethod1(mStepArrayList,
+                                mStepArrayList.get(step_arraylist_position2).getId() + 1);
+
+                    } else
+                    // we are at the last 'index' of the Alist
+                    {
+
+                        // clear old 'Toast' message
+                        if (mToastObject != null) {
+                            mToastObject.cancel();
+                        }
+
+                        mToastObject = Toast.makeText(getContext(), "You Are at the Last Step", Toast.LENGTH_SHORT);
+                        mToastObject.show();
+
                     }
 
-                    m_click_interface.clickInterfaceMethod1( mStepArrayList,
-                            mStepArrayList.get(step_arraylist_position2).getId() + 1 );
+                } // onClick
+            }); // setOnClickListener
 
-                } else
-                // we are at the last 'index' of the Alist
-                 {
 
-                    // clear old 'Toast' message
-                    if (mToastObject != null) {
-                        mToastObject.cancel();
+            // BUTTON CLICK HANDLER
+            but_previous.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    int firstIndexOfTheArrayList = 0;
+
+                    if (mStepArrayList.get(step_arraylist_position2).getId() > firstIndexOfTheArrayList) {
+
+                        if (player != null) {
+                            player.stop();
+                        }
+
+                        m_click_interface.clickInterfaceMethod1(mStepArrayList,
+                                mStepArrayList.get(step_arraylist_position2).getId() - 1);
+
+                    } else {
+
+                        // clear old 'Toast' message
+                        if (mToastObject != null) {
+                            mToastObject.cancel();
+                        }
+
+                        mToastObject = Toast.makeText(getContext(), "You Are at the First Step", Toast.LENGTH_SHORT);
+                        mToastObject.show();
+
                     }
 
-                    mToastObject = Toast.makeText(getContext(),"You Are at the Last Step", Toast.LENGTH_SHORT);
-                    mToastObject.show();
+                } // onClick
+            }); // setOnClickListener
 
-                }
-
-            } // onClick
-        }); // setOnClickListener
-
-
-
-        // BUTTON CLICK HANDLER
-        but_previous.setOnClickListener( new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                int firstIndexOfTheArrayList = 0;
-
-                if ( mStepArrayList.get(step_arraylist_position2).getId() > firstIndexOfTheArrayList )  {
-
-                    if (player!=null){
-                        player.stop();
-                    }
-
-                    m_click_interface.clickInterfaceMethod1( mStepArrayList,
-                            mStepArrayList.get(step_arraylist_position2).getId() - 1 );
-
-                } else {
-
-                    // clear old 'Toast' message
-                    if (mToastObject != null) {
-                        mToastObject.cancel();
-                    }
-
-                    mToastObject = Toast.makeText(getContext(), "You Are at the First Step", Toast.LENGTH_SHORT);
-                    mToastObject.show();
-
-                }
-
-            } // onClick
-        }); // setOnClickListener
-
+        } // else mTwoPane
 
 
         return rootView;
     } // onCreateView
+
+
 
 
     @Override

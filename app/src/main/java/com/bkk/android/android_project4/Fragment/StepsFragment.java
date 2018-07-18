@@ -3,12 +3,14 @@ package com.bkk.android.android_project4.Fragment;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bkk.android.android_project4.Adapter.StepsAdapter;
 import com.bkk.android.android_project4.KeyUtil.KeyFile;
@@ -26,6 +28,7 @@ public class StepsFragment extends Fragment
 
 
     List<Step> step_list;
+    boolean mTwoPane;
 
     // empty constructor for the Fragment
     public StepsFragment() {
@@ -40,35 +43,34 @@ public class StepsFragment extends Fragment
 
         // get the 'Bundle'
         Recipe recipe_object = getArguments().getParcelable( KeyFile.INGREDIENT_KEY );
+        mTwoPane = getArguments().getBoolean( KeyFile.MTWOPANE );
+//            Log.v("tag Landscape ? ", String.valueOf(mTwoPane) );
+
 
         // make a new List from the 'Bundle'
         step_list = recipe_object.getSteps();
 
 
+            // make a new RecyclerView
+            RecyclerView stepsRecyclerView = rootView.findViewById(R.id.rv_steps_to_do);
 
-        // make a new RecyclerView
-        RecyclerView stepsRecyclerView = rootView.findViewById(R.id.rv_steps_to_do);
 
+            // make a new LinearLayout
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager( getActivity() );
+            stepsRecyclerView.setLayoutManager( linearLayoutManager );
+            stepsRecyclerView.setHasFixedSize(false);
 
-        // make a new LinearLayout
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager( getActivity() );
-        stepsRecyclerView.setLayoutManager( linearLayoutManager );
-        stepsRecyclerView.setHasFixedSize(false);
+            // make a new Adapter/data for RecyclerView, getActivity() ??????
+            StepsAdapter stepsAdapter = new StepsAdapter( getActivity(), this  );
 
-        // make a new Adapter/data for RecyclerView, getActivity() ??????
-        StepsAdapter stepsAdapter = new StepsAdapter( getActivity(), this  );
+            // insert data into the RecyclerView
+            stepsRecyclerView.setAdapter( stepsAdapter );
 
-        // insert data into the RecyclerView
-        stepsRecyclerView.setAdapter( stepsAdapter );
+            stepsAdapter.swapData( step_list );
 
-        stepsAdapter.swapData( step_list );
 
         return rootView;
     }
-
-
-
-
 
 
 
@@ -92,8 +94,36 @@ public class StepsFragment extends Fragment
         intent1.putParcelableArrayListExtra("step_arraylist", asdf_step);
         intent1.putExtra("step_arraylist_position2", adapterPosition);
 
-        // start the Activity
-        startActivity(intent1);
+        // make a logic to test for Landscape or Portrait mode
+        // true is protrait
+        // use the mTwoPan
+        // TODO: default value is TRUE
+        if ( mTwoPane ) {
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+            // make a new 'Bundle' and put the 'INGREDIENTS' in it
+            Bundle bundleForFragments = new Bundle();
+
+            bundleForFragments.putParcelableArrayList( "step_arraylist" , asdf_step);
+            bundleForFragments.putInt("step_arraylist_position2", adapterPosition);
+
+            VideoAndLongDesFragment videoAndLongDesFragment = new VideoAndLongDesFragment();
+            videoAndLongDesFragment.setArguments( bundleForFragments );
+
+
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_video_and_desc, videoAndLongDesFragment)
+                    .commit();
+
+        } else {
+
+            // start the Activity
+            startActivity(intent1);
+
+        }
+
 
     } // step_on_click()
 
