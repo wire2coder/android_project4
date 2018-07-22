@@ -44,7 +44,7 @@ public class StepsFragment extends Fragment
         // get the 'Bundle'
         Recipe recipe_object = getArguments().getParcelable( KeyFile.INGREDIENT_KEY );
         mTwoPane = getArguments().getBoolean( KeyFile.MTWOPANE );
-//            Log.v("tag Landscape ? ", String.valueOf(mTwoPane) );
+            Log.v("tag  St Frag Lands ? ", String.valueOf(mTwoPane) );
 
 
         // make a new List from the 'Bundle'
@@ -93,6 +93,7 @@ public class StepsFragment extends Fragment
         ArrayList<Step> asdf_step = new ArrayList<>(step_list);
         intent1.putParcelableArrayListExtra("step_arraylist", asdf_step);
         intent1.putExtra("step_arraylist_position2", adapterPosition);
+        intent1.putExtra( KeyFile.MTWOPANE, false);
 
         // make a logic to test for Landscape or Portrait mode
         // true is protrait
@@ -107,6 +108,7 @@ public class StepsFragment extends Fragment
 
             bundleForFragments.putParcelableArrayList( "step_arraylist" , asdf_step);
             bundleForFragments.putInt("step_arraylist_position2", adapterPosition);
+            bundleForFragments.putBoolean( KeyFile.MTWOPANE, true);
 
             VideoAndLongDesFragment videoAndLongDesFragment = new VideoAndLongDesFragment();
             videoAndLongDesFragment.setArguments( bundleForFragments );
@@ -117,7 +119,8 @@ public class StepsFragment extends Fragment
                     .replace(R.id.fragment_video_and_desc, videoAndLongDesFragment)
                     .commit();
 
-        } else {
+
+        } else { // Portrait Mode
 
             // start the Activity
             startActivity(intent1);

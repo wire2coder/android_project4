@@ -33,6 +33,9 @@ public class StepsWithVideoActivity extends AppCompatActivity implements VideoAn
             Recipe recipe_object = selectedRecipeBundle.getParcelable(KeyFile.INGREDIENT_KEY);
 //                Log.v("tag", recipe_object.getName() );
 
+            Boolean mTwoPane = selectedRecipeBundle.getBoolean(KeyFile.MTWOPANE);
+                Log.v("tag StepsWVA", String.valueOf(mTwoPane) );
+
             FragmentManager fragmentManager = getSupportFragmentManager(); // use import android.support.v4.app.FragmentManager;
 
             VideoAndLongDesFragment vald_fragment = new VideoAndLongDesFragment();

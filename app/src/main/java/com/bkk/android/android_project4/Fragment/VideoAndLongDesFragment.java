@@ -1,5 +1,6 @@
 package com.bkk.android.android_project4.Fragment;
 
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bkk.android.android_project4.DetailActivity;
+import com.bkk.android.android_project4.KeyUtil.KeyFile;
 import com.bkk.android.android_project4.Model.Step;
 import com.bkk.android.android_project4.R;
 import com.bkk.android.android_project4.StepsWithVideoActivity;
@@ -49,6 +52,11 @@ public class VideoAndLongDesFragment extends Fragment {
     private BandwidthMeter bandwidthMeter;
     private Handler mainHandler;
 
+    private Button but_next;
+    private Button but_previous;
+    private TextView tv_long_description;
+
+
     private int step_arraylist_position2;
     private ArrayList<Step> mStepArrayList;
     private Step mStepObject;
@@ -56,6 +64,7 @@ public class VideoAndLongDesFragment extends Fragment {
     private Toast mToastObject;
 
     int lastIndexOfTheArrayList = 0;
+    boolean mTwoPane;
 
 
     // empty constructor for Fragment
@@ -91,14 +100,18 @@ public class VideoAndLongDesFragment extends Fragment {
          * */
 
         View rootView = inflater.inflate(R.layout.fragment_video_and_desc, container, false);
-        final Button but_next = rootView.findViewById(R.id.but_next);
-        Button but_previous = rootView.findViewById(R.id.but_previous);
-        TextView tv_long_description = rootView.findViewById(R.id.tv_long_description);
+        but_next = rootView.findViewById(R.id.but_next);
+        but_previous = rootView.findViewById(R.id.but_previous);
+        tv_long_description = rootView.findViewById(R.id.tv_long_description);
 
         mainHandler = new Handler();
         bandwidthMeter = new DefaultBandwidthMeter();
         simpleExoPlayerView = (SimpleExoPlayerView) rootView.findViewById(R.id.video_player1);
         simpleExoPlayerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIT);
+
+
+
+
 
             /*
              * Logic for extracting data from the 'THIS Activity Bundle'
@@ -124,13 +137,23 @@ public class VideoAndLongDesFragment extends Fragment {
 
 
         mStepObject = mStepArrayList.get(step_arraylist_position2);
+        mTwoPane = getArguments().getBoolean(KeyFile.MTWOPANE);
+            Log.v("tag VideoAndLongDesFra", String.valueOf(mTwoPane) );
+
+
 
 
 
         // check for Landscape vs Portrait
         // Landscape mode, don't make new activity when buttons are click
         // TODO: default value is false
-        if ( false ) {
+        // TODO: BUG if we change the value to false
+        // TODO: true for Landscape, false for Portrait
+            if (false) {
+
+            // TODO: change this to for Protrait
+            m_click_interface = (DetailActivity) getContext();
+
 
             String link_to_video = mStepObject.getVideoURL();
             tv_long_description.setText(mStepObject.getDescription());
@@ -144,11 +167,13 @@ public class VideoAndLongDesFragment extends Fragment {
             }
 
             // Portrait mode, make new activity when click on button
-        } else {
+        } else  {
+
 
             // initializing click_listener, make sure do 'IMPLEMENT' the VideoAndLongDesFragment.ClickInterface
-            // TODO: casting error, HERE 7/18
-            m_click_interface = (StepsWithVideoActivity) getActivity();
+            // TODO: for Portrait, not for Landscape or you will get 'casting error'
+            m_click_interface = (StepsWithVideoActivity) container.getContext();
+
 
             String link_to_video = mStepObject.getVideoURL();
 //            Log.v("tag link_to_video ", link_to_video  );
@@ -158,7 +183,6 @@ public class VideoAndLongDesFragment extends Fragment {
              * Logic for fill data into the XML file
              * */
             tv_long_description.setText(mStepObject.getDescription());
-
 
 
             /*
@@ -176,6 +200,8 @@ public class VideoAndLongDesFragment extends Fragment {
                                 getContext(), R.drawable.ic_visibility_off_white_36dp)
                 );
             }
+
+
 
 
             // BUTTON CLICK HANDLER
@@ -244,6 +270,7 @@ public class VideoAndLongDesFragment extends Fragment {
 
                 } // onClick
             }); // setOnClickListener
+
 
         } // else mTwoPane
 

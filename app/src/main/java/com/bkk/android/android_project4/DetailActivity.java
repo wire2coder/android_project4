@@ -20,7 +20,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity
+        implements VideoAndLongDesFragment.ClickInterface {
 
 
     boolean mTwoPane;
@@ -33,7 +34,7 @@ public class DetailActivity extends AppCompatActivity {
 
         // Landscape mode
         if ( findViewById(R.id.ll_detailactivity_land) != null ) {
-            mTwoPane = true; // why do we need this?
+            mTwoPane = true;
 //            Toast.makeText(getApplicationContext(), "Landscape Mode", Toast.LENGTH_SHORT).show();
 
 
@@ -110,6 +111,9 @@ public class DetailActivity extends AppCompatActivity {
             Bundle bundleForFragments = new Bundle();
             bundleForFragments.putParcelable(KeyFile.INGREDIENT_KEY, recipe_object);
 
+            // TEST THIS VALUE
+            bundleForFragments.putBoolean( KeyFile.MTWOPANE, mTwoPane);
+
 
             // use import android.support.v4.app.FragmentManager;
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -143,6 +147,35 @@ public class DetailActivity extends AppCompatActivity {
 
 
     } // onCreate
+
+
+    // for implements VideoAndLongDesFragment.ClickInterface
+    @Override
+    public void clickInterfaceMethod1(ArrayList<Step> step_arraylist, int step_arraylist_position2) {
+        Log.v("tag clickMethod1", String.valueOf( step_arraylist_position2 )  );
+
+//
+//        /*
+//         * Logic for making new starting new Fragment
+//         * */
+//        FragmentManager fragmentManager = getSupportFragmentManager(); // use import android.support.v4.app.FragmentManager;
+//        VideoAndLongDesFragment vald_fragment2 = new VideoAndLongDesFragment();
+//
+//
+//        Bundle onClickBundleObject = new Bundle();
+//        onClickBundleObject.putParcelableArrayList("step_arraylist", step_arraylist);
+//        onClickBundleObject.putInt("step_arraylist_position2", step_arraylist_position2);
+//
+//
+//        vald_fragment2.setArguments(onClickBundleObject);
+//
+//
+//        fragmentManager.beginTransaction()
+//                // .replace() instad of .add() so you make a new VideoPlayer
+//                .replace(R.id.fragment_video_and_desc, vald_fragment2)
+//                .commit();
+
+    } // clickInterfaceMethod1()
 
 
 } // DetailActivity
