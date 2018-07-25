@@ -95,37 +95,12 @@ public class StepsFragment extends Fragment
         intent1.putExtra("step_arraylist_position2", adapterPosition);
         intent1.putExtra( KeyFile.MTWOPANE, false);
 
-        // make a logic to test for Landscape or Portrait mode
-        // true is protrait
-        // use the mTwoPan
-        // TODO: default value is TRUE
-        if ( mTwoPane ) {
 
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
-            // make a new 'Bundle' and put the 'INGREDIENTS' in it
-            Bundle bundleForFragments = new Bundle();
-
-            bundleForFragments.putParcelableArrayList( "step_arraylist" , asdf_step);
-            bundleForFragments.putInt("step_arraylist_position2", adapterPosition);
-            bundleForFragments.putBoolean( KeyFile.MTWOPANE, true);
-
-            VideoAndLongDesFragment videoAndLongDesFragment = new VideoAndLongDesFragment();
-            videoAndLongDesFragment.setArguments( bundleForFragments );
-
-
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fragment_video_and_desc, videoAndLongDesFragment)
-                    .commit();
-
-
-        } else { // Portrait Mode
 
             // start the Activity
             startActivity(intent1);
 
-        }
+
 
 
     } // step_on_click()

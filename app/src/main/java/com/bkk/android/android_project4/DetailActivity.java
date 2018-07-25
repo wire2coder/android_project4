@@ -1,30 +1,29 @@
 package com.bkk.android.android_project4;
 
-import com.bkk.android.android_project4.Adapter.IngredientAdapter;
+
 import com.bkk.android.android_project4.Fragment.IngredientFragment;
 import com.bkk.android.android_project4.Fragment.StepsFragment;
 import com.bkk.android.android_project4.Fragment.VideoAndLongDesFragment;
 import com.bkk.android.android_project4.KeyUtil.KeyFile;
-import com.bkk.android.android_project4.Model.Ingredient;
 import com.bkk.android.android_project4.Model.Recipe;
 import com.bkk.android.android_project4.Model.Step;
-
+import com.bkk.android.android_project4.SharedViewModel.DetailViewModel;
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity
-        implements VideoAndLongDesFragment.ClickInterface {
+public class DetailActivity extends AppCompatActivity {
 
 
+    private static final String TAG = DetailActivity.class.getSimpleName();
+    private DetailViewModel mDetailViewModel;
     boolean mTwoPane;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,94 +31,87 @@ public class DetailActivity extends AppCompatActivity
         setContentView(R.layout.activity_detail);
 
 
-        // Landscape mode
-        if ( findViewById(R.id.ll_detailactivity_land) != null ) {
-            mTwoPane = true;
-//            Toast.makeText(getApplicationContext(), "Landscape Mode", Toast.LENGTH_SHORT).show();
+        // get data out of the 'Intent' object
+        Recipe recipe_object = getIntent().getExtras().getParcelable(MainActivity.RECIPE_KEY);
+
+        // ShareViewModel Logic
+        mDetailViewModel = ViewModelProviders.of(DetailActivity.this).get(DetailViewModel.class);
+        mDetailViewModel.setRecipe_object(recipe_object);
+
+        Recipe recipe_object_viewmodel = mDetailViewModel.getRecipe_object();
+//            Log.v(TAG, String.valueOf( recipe_object_viewmodel )  );
 
 
-            // get data out of the 'Intent' object
-            Recipe recipe_object = getIntent().getExtras().getParcelable(MainActivity.RECIPE_KEY);
 
-
-            // make a new 'Bundle' and put the 'INGREDIENTS' in it
-            Bundle bundleForFragments = new Bundle();
-            bundleForFragments.putParcelable(KeyFile.INGREDIENT_KEY, recipe_object);
-
-            // TEST THIS VALUE
-            bundleForFragments.putBoolean( KeyFile.MTWOPANE, mTwoPane);
-
-
+        // Landscape mode, 3 fragments
+        if ( findViewById(R.id.detailactivity_land) != null ) {
 
             // use import android.support.v4.app.FragmentManager;
             FragmentManager fragmentManager = getSupportFragmentManager();
+
+            // make a new 'Bundle' and put the 'INGREDIENTS' in it
+            Bundle bundleForFragments = new Bundle();
+            bundleForFragments.putParcelable(KeyFile.INGREDIENT_KEY, recipe_object_viewmodel);
+
+            // TEST THIS VALUE
+            bundleForFragments.putBoolean( KeyFile.MTWOPANE, true);
 
 
             IngredientFragment ingredientFragment = new IngredientFragment();
             ingredientFragment.setArguments( bundleForFragments );
 
-
+            // Ingredient Fragment, 1
             fragmentManager
                     .beginTransaction()
                     .add(R.id.fragment_ingredient, ingredientFragment)
                     .commit();
 
 
-            // COMPLETED: make a new fragment, StepsFragment.java
+
             StepsFragment stepsFragment = new StepsFragment();
             stepsFragment.setArguments( bundleForFragments );
 
+            // Steps Fragment, 2
             fragmentManager
                     .beginTransaction()
                     .add(R.id.fragment_steps, stepsFragment)
                     .commit();
 
 
-//            Bundle selectedRecipeBundle = intentThatStartedThisActivity.getExtras();
 
-
-            List steps_list = recipe_object.getSteps();
+            List l_steps = recipe_object_viewmodel.getSteps();
             Bundle step_bundle = new Bundle();
 
-//          List<Step> stepsOut
+
 //          'casting' ArrayList into List
-            step_bundle.putParcelableArrayList( "step_arraylist", (ArrayList<Step>) steps_list);
+            /* step_bundle.putParcelableArrayList( "step_arraylist", (ArrayList<Step>) l_steps);
 
             VideoAndLongDesFragment vald_fragment = new VideoAndLongDesFragment();
 
             vald_fragment.setArguments( step_bundle );
 
+
             fragmentManager.beginTransaction()
                     .add(R.id.fragment_video_and_desc, vald_fragment)
                     .commit();
+            */
 
 
-
-        } else { // Portrait Mode
-            mTwoPane = false;
-
-
-            // get references to 'views' in activity_detail.xml
-            TextView tv_recipe_name2 = findViewById(R.id.tv_recipe_name2);
-
-
-            // get data out of the 'Intent' object
-            Recipe recipe_object = getIntent().getExtras().getParcelable(MainActivity.RECIPE_KEY);
-
-
-            // make a new 'Bundle' and put the 'INGREDIENTS' in it
-            Bundle bundleForFragments = new Bundle();
-            bundleForFragments.putParcelable(KeyFile.INGREDIENT_KEY, recipe_object);
-
-            // TEST THIS VALUE
-            bundleForFragments.putBoolean( KeyFile.MTWOPANE, mTwoPane);
-
+        } else { // Portrait Mode, 2 fragments
 
             // use import android.support.v4.app.FragmentManager;
             FragmentManager fragmentManager = getSupportFragmentManager();
 
 
-            // COMPLETED: make a new fragment, IngredientFragment.java
+
+            Bundle bundleForFragments = new Bundle();
+            bundleForFragments.putParcelable(KeyFile.INGREDIENT_KEY, recipe_object_viewmodel);
+
+            // TEST THIS VALUE
+            bundleForFragments.putBoolean( KeyFile.MTWOPANE, false);
+
+
+            // Ingredient Fragment, 1
             IngredientFragment ingredientFragment = new IngredientFragment();
             ingredientFragment.setArguments( bundleForFragments );
 
@@ -130,7 +122,7 @@ public class DetailActivity extends AppCompatActivity
                     .commit();
 
 
-            // COMPLETED: make a new fragment, StepsFragment.java
+            // Step Fragment, 2
             StepsFragment stepsFragment = new StepsFragment();
             stepsFragment.setArguments( bundleForFragments );
 
@@ -140,42 +132,12 @@ public class DetailActivity extends AppCompatActivity
                     .commit();
 
 
-            // Setting Recipe name
-            tv_recipe_name2.setText( recipe_object.getName() );
 
         } // else
 
 
     } // onCreate
 
-
-    // for implements VideoAndLongDesFragment.ClickInterface
-    @Override
-    public void clickInterfaceMethod1(ArrayList<Step> step_arraylist, int step_arraylist_position2) {
-        Log.v("tag clickMethod1", String.valueOf( step_arraylist_position2 )  );
-
-//
-//        /*
-//         * Logic for making new starting new Fragment
-//         * */
-//        FragmentManager fragmentManager = getSupportFragmentManager(); // use import android.support.v4.app.FragmentManager;
-//        VideoAndLongDesFragment vald_fragment2 = new VideoAndLongDesFragment();
-//
-//
-//        Bundle onClickBundleObject = new Bundle();
-//        onClickBundleObject.putParcelableArrayList("step_arraylist", step_arraylist);
-//        onClickBundleObject.putInt("step_arraylist_position2", step_arraylist_position2);
-//
-//
-//        vald_fragment2.setArguments(onClickBundleObject);
-//
-//
-//        fragmentManager.beginTransaction()
-//                // .replace() instad of .add() so you make a new VideoPlayer
-//                .replace(R.id.fragment_video_and_desc, vald_fragment2)
-//                .commit();
-
-    } // clickInterfaceMethod1()
 
 
 } // DetailActivity

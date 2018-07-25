@@ -20,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements RecipeAdapter.IRecipeAdapterClick {
+public class MainActivity extends AppCompatActivity {
 
     /*
     * variables
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.IRe
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
 
         rv_recipes = findViewById(R.id.rv_recipes);
-        recipeAdapter = new RecipeAdapter(MainActivity.this, MainActivity.this);
+        recipeAdapter = new RecipeAdapter(MainActivity.this);
 
         rv_recipes.setLayoutManager(linearLayoutManager); // >> set Linear Layout
         rv_recipes.setAdapter(recipeAdapter); // >> empty data at this line
@@ -62,19 +62,6 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.IRe
 
                 recipeAdapter.swapData(MainActivity.this, mRecipe_list);
 
-                /*
-                for (int i = 0; i < mRecipe_list.size(); i++) {
-
-                    String asdf1 = mRecipe_list.get(i).getName();
-                    String asdf2 = mRecipe_list.get(i).getIngredients().get(i).getMeasure();
-                    String asdf3 = mRecipe_list.get(i).getSteps().get(i).getShortDescription();
-
-                   Log.v("tag name: ", asdf1);
-                   Log.v("tag measure: ", asdf2);
-                   Log.v("tag short description: ", asdf3);
-
-                }
-                */
             }
 
             @Override
@@ -84,28 +71,8 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.IRe
 
         });
 
-        // Toast.makeText(MainActivity.this, "error :(", Toast.LENGTH_SHORT).show();
 
     } // onCreate
-
-
-    @Override
-    public void onRecipeClick(int position) {
-//        Toast.makeText(this, String.valueOf(position), Toast.LENGTH_SHORT).show();
-
-//        id	2
-//        name	"Brownies"
-//        ingredients	[…]
-//        steps	[…]
-//        servings	8
-//        image	""
-        Recipe recipe_object = mRecipe_list.get( position );
-
-        Intent intentThatStartDetailActivity = new Intent(MainActivity.this, DetailActivity.class);
-        intentThatStartDetailActivity.putExtra(RECIPE_KEY, recipe_object);
-        startActivity(intentThatStartDetailActivity);
-
-    }
 
 
 } // MainActivity

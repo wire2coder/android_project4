@@ -42,7 +42,7 @@ public class StepsWithVideoActivity extends AppCompatActivity implements VideoAn
             vald_fragment.setArguments(selectedRecipeBundle);
 
             fragmentManager.beginTransaction()
-                    .add(R.id.fragment_video_and_desc, vald_fragment)
+                    .replace(R.id.fragment_video_and_desc, vald_fragment)
                     .commit();
 
 

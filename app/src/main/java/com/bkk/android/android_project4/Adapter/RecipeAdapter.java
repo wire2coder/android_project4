@@ -1,6 +1,8 @@
 package com.bkk.android.android_project4.Adapter;
 
+import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,30 +14,31 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bkk.android.android_project4.DetailActivity;
+import com.bkk.android.android_project4.KeyUtil.KeyFile;
 import com.bkk.android.android_project4.Model.Recipe;
 import com.bkk.android.android_project4.R;
+
+
 import java.util.ArrayList;
 
 public class RecipeAdapter extends RecyclerView.Adapter< RecipeAdapter.RecyclerViewHolder  > {
 
 
+    // class variables
     private Context mContext;
-
-    private IRecipeAdapterClick mIRecipeAdapterClick;
-
-    private ArrayList<Recipe> mRecipelist;
+    private ArrayList<Recipe> al_recipe;
 
 
-    public RecipeAdapter(Context mContext, IRecipeAdapterClick clickListener) {
+    public RecipeAdapter(Context mContext) {
         this.mContext = mContext;
-        this.mIRecipeAdapterClick = clickListener;
     }
 
 
     public void swapData(Context context_in, ArrayList<Recipe> list_in ) {
 
         if (list_in.size() != 0) {
-            this.mRecipelist = list_in;
+            this.al_recipe = list_in;
             notifyDataSetChanged();
         } else {
             Toast.makeText(context_in, "list_in is empty! ", Toast.LENGTH_SHORT).show();
@@ -72,7 +75,7 @@ public class RecipeAdapter extends RecyclerView.Adapter< RecipeAdapter.RecyclerV
     @Override
     public void onBindViewHolder(@NonNull RecipeAdapter.RecyclerViewHolder holder, int position) {
 
-        Recipe recipe_object = mRecipelist.get( position );
+        Recipe recipe_object = al_recipe.get( position );
 
         String recipe_name = recipe_object.getName();
         String ingredient_counts =  String.valueOf( recipe_object.getIngredients().size() );
@@ -87,11 +90,11 @@ public class RecipeAdapter extends RecyclerView.Adapter< RecipeAdapter.RecyclerV
 
     @Override
     public int getItemCount() {
-        return mRecipelist != null ? mRecipelist.size() : 0 ;
+        return al_recipe != null ? al_recipe.size() : 0 ;
     }
 
 
-    class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         TextView tv_recipe_name;
         TextView tv_recipe_name_label;
@@ -107,30 +110,29 @@ public class RecipeAdapter extends RecyclerView.Adapter< RecipeAdapter.RecyclerV
             tv_main_steps_count = itemView.findViewById(R.id.tv_main_steps_count);
 
 
-            // implements View.OnClickListener
-            itemView.setOnClickListener(this);
-        }
+            tv_recipe_name.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-        // implements View.OnClickListener
-        @Override
-        public void onClick(View v) {
-            int row_position = getAdapterPosition();
+                    int adapterPosition = getAdapterPosition();
 
-            mIRecipeAdapterClick.onRecipeClick( row_position );
+                    Context context =  v.getContext();
+
+                    Recipe recipe_object = al_recipe.get( adapterPosition );
+
+
+                    Intent intent = new Intent( context, DetailActivity.class);
+                    intent.putExtra(KeyFile.RECIPE_KEY, recipe_object);
+                    context.startActivity(intent);
+
+                }
+            } );
+
 
         }
 
 
     } // class RecyclerViewHolder
 
-
-
-
-    // use an Interface to get data from MainActivity
-    public interface IRecipeAdapterClick {
-
-        void onRecipeClick(int i);
-
-    } // interface
 
 } // class RecipeAdapter
